@@ -12,7 +12,7 @@
     $lightness = $_POST["lightness"];
     $humidity = $_POST["humidity"];
     
-    $query = "INSERT INTO anggurqare_log (soil_ph, soil_moisture, nutition_tds, water_ph, water_temp, water_level, temperature, lightness, humidity)
+    $query = "INSERT INTO anggurqare_log (soil_ph, soil_moisture, nutrition_tds, water_ph, water_temp, water_level, temperature, lightness, humidity)
             VALUES ('".$soil_ph."','".$soil_moisture."','".$nutrition_tds."','".$water_ph."','".$water_temp."','".$water_level."','".$temperature."','".$lightness."','".$humidity."')";
     if ($conn->query($query) === TRUE) {
       echo "Berhasil menyimpan data ke table log";
