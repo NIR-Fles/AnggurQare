@@ -16,7 +16,7 @@
       <th>Water Temperature</th>
       <th>Water Level</th>
       <th>Temperature</th>
-      <th>Lightnes</th>
+      <th>Lightness</th>
       <th>Humidity</th>
     </tr>
     <?php
