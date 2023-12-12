@@ -3,8 +3,8 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266HTTPClient.h>
 
-const char *ssid = "0101";
-const char *password = "01010101";
+const char *ssid = "PIXEL X3";
+const char *password = "abcsampez";
 
 float soilPH, readLux, waterPH, waterTemp, waterLevel, tdsValue, temperature, humidity, soilMoisture;
 
@@ -70,6 +70,7 @@ void loop() {
     humidity = splitString(msg, ';', 8).toFloat();
     sendDataToServer();
     //    Serial.print(msg);
+    delay(1000);
   }
 }
 
@@ -98,7 +99,7 @@ void sendDataToServer() {
   postData += humidity;
 
 
-  http.begin(client, "http://192.168.65.134/anggurqare_database/anggurqare_server.php");
+  http.begin(client, "http://localhost/anggurqare_database/anggurqare_server.php");
   http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
   int httpCode = http.POST(postData);  //Send the request

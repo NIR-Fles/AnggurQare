@@ -12,12 +12,12 @@
 #define soilPin A0
 #define pHPin A1
 #define tdsPin A2
-#define waterPHPin A3
-#define waterTempPin A4
-#define relayPump1Pin 2
-#define relayPump2Pin 7
+#define waterPHPin A3 //PO
+#define waterTempPin A4 //TO
+#define relayPump1Pin 2 //AC PUMP
+#define relayPump2Pin 7 //DC PUMP
 #define relayMistPin 8
-#define waterValvePin 3
+#define waterValvePin 3  
 #define nutritionValvePin 4
 #define echoPin 5
 #define triggerPin 6
@@ -510,7 +510,7 @@ void waterPH_function()
 void waterTemp_function()
 {
   waterTemp = PH4502C.read_temp();
-  waterTemp_act = waterTemp / 10.0;
+  waterTemp_act = (waterTemp / 10.0) - 50;
   Serial2.print("mainPage.n4.val=");
   Serial2.print(waterTemp_act,0);
   Serial2.write(0xff);
@@ -567,7 +567,7 @@ void waterLevel_function()
 {
   //WaterPump for Tank Set-Up use Ultrasonic sensor
   Distance = (waterLevel_ultrasonic.ping()/US_ROUNDTRIP_CM);
-  waterLevel = map(Distance, 20, 5, 0, 100);
+  waterLevel = map(Distance, 19, 50, 100, 0);
   Serial2.print("mainPage.n5.val=");
   Serial2.print(waterLevel,0);
   Serial2.write(0xff);
@@ -686,7 +686,7 @@ void readLux_function()
   Serial2.print("lightness.n0.val=");
   Serial2.print(readLux,0);
   Serial2.write(0xff);
-  Serial2.write(0xff);
+  Serial2.write(0xff); 
   Serial2.write(0xff);
   // mainPage_n7.setValue(readLux);
   // lightness_n0.setValue(readLux);
@@ -762,7 +762,7 @@ void humidity_function()
   {
     Serial2.print("humidity.t1.txt=");
     Serial2.print("\"");
-    Serial2.print("Too Humid");
+    Serial2.print("Over");
     Serial2.print("\"");
     Serial2.write(0xff);
     Serial2.write(0xff);
@@ -818,7 +818,6 @@ void sendToESP_function()
   Serial.println(msg);
   }
   
-  
 }
 
 //----------- HMI NO NEXTION LIBRARY BUTTON ----------//
@@ -833,10 +832,15 @@ void setup() {
   myDHT.begin();
   lightMeter.begin();
   pinMode(relayPump1Pin, OUTPUT);
+  digitalWrite(relayPump1Pin, HIGH);
   pinMode(relayPump2Pin, OUTPUT);
+  digitalWrite(relayPump2Pin, HIGH);
   pinMode(relayMistPin, OUTPUT);
+  digitalWrite(relayMistPin, HIGH);
   pinMode(waterValvePin, OUTPUT);
+  digitalWrite(waterValvePin, HIGH);
   pinMode(nutritionValvePin, OUTPUT);
+  digitalWrite(nutritionValvePin, HIGH);
   pinMode(triggerPin, OUTPUT);
   pinMode(echoPin, INPUT); //or use INPUT_PULLUP if trouble
   myTDS.setPin(tdsPin);
@@ -863,7 +867,7 @@ void loop() {
   // put your main code here, to run repeatedly:
 
   nexLoop(changeModeList);
-
+  
   unsigned long currentMillis = millis();
   
   if (currentMillis - previousMillis_1 >= interval) 
@@ -924,7 +928,7 @@ void loop() {
   if (operationMode == 1)
   {
     //Logic for fill Water Tank
-  if (waterLevel < 100 && waterState == true)
+  if (waterLevel < 90 && waterState == true)
     {
       digitalWrite(waterValvePin, LOW);
       digitalWrite(relayPump2Pin, LOW);
@@ -942,7 +946,7 @@ void loop() {
     }
 
     //Logic for Refill Nutrition 
-  if (waterLevel == 100 && tdsValue < 1000 && waterState == false)
+  if (waterLevel >= 90  && tdsValue < 1000 && waterState == false)
     {
       digitalWrite(nutritionValvePin, LOW);
       digitalWrite(relayPump2Pin, LOW);
@@ -964,7 +968,7 @@ void loop() {
     }
   
   //Logic for Watering the Hydroponics
-  if (soilMoisture < 70)
+  if (soilMoisture < 60)
     {
       digitalWrite(relayPump1Pin, LOW);
     }
