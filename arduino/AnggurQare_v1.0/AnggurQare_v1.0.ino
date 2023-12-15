@@ -798,7 +798,7 @@ void sendToESP_function()
   sendToESP += waterTemp;
   sendToESP += ";";
   sendToESP += waterLevel;
-  sendToESP + ";";
+  sendToESP += ";";
   sendToESP += temperature;
   sendToESP += ";";
   sendToESP += readLux;
