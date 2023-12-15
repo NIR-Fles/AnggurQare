@@ -826,7 +826,7 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   Serial2.begin(115200);
-  Serial3.begin(115200);
+  Serial3.begin(57600);
   Wire.begin();
   nexInit();
   myDHT.begin();
