@@ -38,7 +38,7 @@ unsigned long previousMillis_7 = 0;
 unsigned long previousMillis_8 = 0;
 unsigned long previousMillis_9 = 0;
 unsigned long previousMillis_10 = 0;
-const long interval = 500;
+const long interval = 1000;
 
 
 //-----------------UPTDATE WATER PH CODE (WILL UPDATE SOON)---------------------//
